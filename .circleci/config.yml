@@ -18,6 +18,7 @@ jobs:
          command: |
             cd ./config
             scp -o StrictHostKeyChecking=no -r ./* ubuntu@3.231.158.234:~/
+            ssh -o StrictHostKeyChecking=no ubuntu@3.231.158.234 "sudo apt-get install kubectl"
             ssh -o StrictHostKeyChecking=no ubuntu@3.231.158.234 "curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.16.8/2020-04-16/bin/linux/amd64/kubectl"
             ssh -o StrictHostKeyChecking=no ubuntu@3.231.158.234 "curl -o kubectl.sha256 https://amazon-eks.s3.us-west-2.amazonaws.com/1.16.8/2020-04-16/bin/linux/amd64/kubectl.sha256"
             ssh -o StrictHostKeyChecking=no ubuntu@3.231.158.234 "openssl sha1 -sha256 kubectl"
@@ -44,6 +45,7 @@ jobs:
          command: |
             cd ./config
             scp -o StrictHostKeyChecking=no -r ./* ubuntu@34.201.47.241:~/
+            ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "sudo apt-get install kubectl"
             ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.16.8/2020-04-16/bin/linux/amd64/kubectl"
             ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "curl -o kubectl.sha256 https://amazon-eks.s3.us-west-2.amazonaws.com/1.16.8/2020-04-16/bin/linux/amd64/kubectl.sha256"
             ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "openssl sha1 -sha256 kubectl"
