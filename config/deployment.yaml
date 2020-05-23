@@ -17,7 +17,8 @@ spec:
         - name: app1
           image: httpd:2.4
           ports:
-          - containerPort: 5000
+          - port: 81
+            targetPort: 5000
           volumeMounts:
           - name: index-config1
             mountPath: /usr/local/apache2/htdocs/
