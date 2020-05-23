@@ -34,10 +34,11 @@ spec:
           hostPath:
             path: /home/ubuntu/App1/
         - name: nginx-proxy-config
-          #configMap:
-            #name: config-map
+          configMap:
+            name: config-map
   
            
+---
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -61,16 +62,14 @@ data:
             server 127.0.0.1;
         }
         server {
-            listen 80;
-            listen [::]:80 ipv6only=on default_server;
+            listen 3000;
+            server_name localhost;
             location / {
-                proxy_pass         http://localhost:81;
+                root   /usr/share/nginx/html;
+                index  index.html index.htm;
             }
-            location /web2 {
-                proxy_pass         http://localhost:82/index.html;
-                proxy_redirect     off;
-            }
-        }
+
+       }
     }
 ---
 apiVersion: v1
