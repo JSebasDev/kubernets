@@ -21,9 +21,6 @@ jobs:
             ssh -o StrictHostKeyChecking=no ubuntu@3.231.158.234 "curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.16.0/bin/linux/amd64/kubectl"
             ssh -o StrictHostKeyChecking=no ubuntu@3.231.158.234 "chmod +x ./kubectl"
             ssh -o StrictHostKeyChecking=no ubuntu@3.231.158.234 "sudo mv ./kubectl /usr/local/bin/kubectl"
-            ssh -o StrictHostKeyChecking=no ubuntu@3.231.158.234 "kubectl delete all --all"
-            ssh -o StrictHostKeyChecking=no ubuntu@3.231.158.234 "kubectl delete all --all"
-            ssh -o StrictHostKeyChecking=no ubuntu@3.231.158.234 "kubectl delete all --all"
             ssh -o StrictHostKeyChecking=no ubuntu@3.231.158.234 "kubectl apply -f deployment.yaml"
     
   productionDeploy:
@@ -44,9 +41,6 @@ jobs:
             ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.16.0/bin/linux/amd64/kubectl"
             ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "chmod +x ./kubectl"
             ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "sudo mv ./kubectl /usr/local/bin/kubectl"
-            ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "kubectl delete all --all"
-            ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "kubectl delete all --all"
-            ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "kubectl delete all --all"
             ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "kubectl apply -f deployment.yaml"
       
       - save_cache:
