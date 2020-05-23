@@ -18,6 +18,7 @@ jobs:
          command: |
             cd ./config
             scp -o StrictHostKeyChecking=no -r ./* ubuntu@3.223.125.157:~/
+            ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "sudo snap install kubectl --classic"
             ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "kubectl delete all --all"
             ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "kubectl delete all --all"
             ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "kubectl apply -f deployment.yaml"
@@ -37,6 +38,7 @@ jobs:
          command: |
             cd ./config
             scp -o StrictHostKeyChecking=no -r ./* ubuntu@34.201.47.241:~/
+            ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "sudo snap install kubectl --classic"
             ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "kubectl delete all --all"
             ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "kubectl delete all --all"
             ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "kubectl apply -f deployment.yaml"
