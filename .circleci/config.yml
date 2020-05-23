@@ -1,99 +1,46 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2
 jobs:
-  deployDevelopment:
+  DevelopmentEnvironment:
     docker:
-      - image: circleci/node:latest
-    working_directory: ~/repo
-
+      - image: circleci/node:8.10
     steps:
-      - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
       - add_ssh_keys:
-          fingerprints:
-            - ""
-      - run: 
-         name: "Deploy Aplicacion 1"
+         fingerprints:
+           - "a0:10:07:ed:9d:01:87:51:ea:45:05:1d:19:1f:90:70"
+      - checkout
+      - run:
+         name: "Archivo yaml" 
          command: |
-            cd ./Aplicacion1
-            yarn run build
-            ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "mkdir -p App1"
-            scp -o StrictHostKeyChecking=no -r ./build/* ubuntu@3.223.125.157:~/App1
-      - run: 
-         name: "Deploy Aplicacion 2"
-         command: |
-            cd ./Aplicacion2
-            yarn run build
-            ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "mkdir -p App2"
-            scp -o StrictHostKeyChecking=no -r ./build/* ubuntu@3.223.125.157:~/App2
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-  productionDeploy:
+           cd ./config
+           scp -o StrictHostKeyChecking=no -r ./* ec2-user@54.173.3.127:~/
+           ssh -o StrictHostKeyChecking=no ec2-user@54.173.3.127 "kubectl delete all --all"
+           ssh -o StrictHostKeyChecking=no ec2-user@54.173.3.127 "kubectl delete all --all"
+           ssh -o StrictHostKeyChecking=no ec2-user@54.173.3.127 "kubectl apply -f deployment.yaml"
+  ProductionEnvironment:
     docker:
-      - image: circleci/node:latest
-    working_directory: ~/repo
-
+      - image: circleci/node:8.10
     steps:
-      - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
       - add_ssh_keys:
-          fingerprints:
-            - ""
-      - run: 
-         name: "Deploy Aplicacion 1"
+         fingerprints:
+           - "a0:10:07:ed:9d:01:87:51:ea:45:05:1d:19:1f:90:70"
+      - checkout
+      - run:
+         name: "Archivo yaml" 
          command: |
-            cd ./Aplicacion1
-            yarn run build
-            ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "mkdir -p App1"
-            scp -o StrictHostKeyChecking=no -r ./build/* ubuntu@34.201.47.241:~/App1
-      - run: 
-         name: "Deploy Aplicacion 2"
-         command: |
-            cd ./Aplicacion2
-            yarn run build
-            ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "mkdir -p App2"
-            scp -o StrictHostKeyChecking=no -r ./build/* ubuntu@34.201.47.241:~/App2
-      
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
- 
-    
-
-
+           cd ./config
+           scp -o StrictHostKeyChecking=no -r ./* ec2-user@54.147.61.160:~/
+           ssh -o StrictHostKeyChecking=no ec2-user@54.147.61.160 "kubectl delete all --all"
+           ssh -o StrictHostKeyChecking=no ec2-user@54.147.61.160 "kubectl delete all --all"
+           ssh -o StrictHostKeyChecking=no ec2-user@54.147.61.160 "kubectl apply -f deployment.yaml"
 workflows:
   version: 2
-  normal_run:
+  build: 
     jobs:
-      - deployDevelopment:
-          filters:
-            branches:
-              only:
-                - master
+      - DevelopmentEnvironment
       - request-testing:
           type: approval
           requires:
-            - deployDevelopment
-      - productionDeploy:
+            - DevelopmentEnvironment
+      - ProductionEnvironment:
           requires:
             - request-testing
-          filters:
-            branches:
-              only:
-                - master  
