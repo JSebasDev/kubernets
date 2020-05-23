@@ -1,5 +1,7 @@
 # Javascript Node CircleCI 2.0 configuration file
-
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
 version: 2
 jobs:
   deployDevelopment:
@@ -16,9 +18,9 @@ jobs:
          command: |
             cd ./config
             scp -o StrictHostKeyChecking=no -r ./* ubuntu@3.223.125.157:~/
-            ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "configctl delete all --all"
-            ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "configctl delete all --all"
-            ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "configctl apply -f deployment.yaml"
+            ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "kubectl delete all --all"
+            ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "kubectl delete all --all"
+            ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "kubectl apply -f deployment.yaml"
     
   productionDeploy:
     docker:
@@ -35,9 +37,9 @@ jobs:
          command: |
             cd ./config
             scp -o StrictHostKeyChecking=no -r ./* ubuntu@34.201.47.241:~/
-            ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "configctl delete all --all"
-            ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "configctl delete all --all"
-            ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "configctl apply -f deployment.yaml"
+            ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "kubectl delete all --all"
+            ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "kubectl delete all --all"
+            ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "kubectl apply -f deployment.yaml"
       
       - save_cache:
           paths:
