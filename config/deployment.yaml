@@ -78,9 +78,9 @@ metadata:
   namespace: default
 spec:
   ports:
-    port: 81
-    protocol: TCP
-    targetPort: 81
+   - port: 81
+     protocol: TCP
+     targetPort: 81
   selector:
     app: nginx
   sessionAffinity: None
