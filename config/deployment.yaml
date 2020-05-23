@@ -32,32 +32,41 @@ data:
         }
     }
 ---
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
 metadata:
-  name: pod-app
+  name: app-ti
 spec:
-  containers:
-    - name: svc-nginx
-      image: nginx
-      ports:
-        - containerPort: 81
-      volumeMounts:
-        - name : config-proxy
-          mountPath: /etc/nginx/nginx.conf
-          subPath: nginx.conf
-    - name: app1
-      image: httpd:2.4
-      volumeMounts:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+     spec:   
+      containers:
+        - name: svc-nginx
+          image: nginx:alpine
+          ports:
+          - containerPort: 81
+          volumeMounts:
+            - name : config-proxy
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+        - name: app1
+          image: httpd:2.4
+          volumeMounts:
+            - name: config-app1
+              mountPath: /usr/local/apache2/htdocs/
+       volumes:
         - name: config-app1
-          mountPath: /usr/local/apache2/htdocs/
-  volumes:
-    - name: config-app1
-      hostPath:
-        path: "/home/ubuntu/App1/"
-    - name: config-proxy
-      configMap:
-        name: config-map-proxy   
+          hostPath:
+            path: /home/ubuntu/App1/
+        - name: config-proxy
+          configMap:
+             name: config-map-proxy   
 ---
 apiVersion: v1
 kind: Service
