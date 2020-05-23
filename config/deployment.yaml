@@ -24,7 +24,7 @@ spec:
         - name: nginx
           image: nginx:alpine
           ports:
-          - containerPort: 81
+          - containerPort: 80
           volumeMounts:
           - name: nginx-proxy-config
             mountPath: /etc/nginx/nginx.conf
@@ -61,13 +61,13 @@ data:
             server 127.0.0.1;
         }
         server {
-            listen 81;
-            listen [::]:81 ipv6only=on default_server;
+            listen 80;
+            listen [::]:80 ipv6only=on default_server;
             location / {
-                proxy_pass         http://localhost:5000;
+                proxy_pass         http://localhost:81;
             }
             location /web2 {
-                proxy_pass         http://localhost:80/index.html;
+                proxy_pass         http://localhost:82/index.html;
                 proxy_redirect     off;
             }
         }
@@ -80,9 +80,9 @@ metadata:
   namespace: default
 spec:
   ports:
-   - port: 81
+   - port: 80
      protocol: TCP
-     targetPort: 5000
+     #targetPort: 5000
   selector:
     app: nginx
   sessionAffinity: None
