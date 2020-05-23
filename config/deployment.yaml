@@ -34,8 +34,8 @@ spec:
           hostPath:
             path: /home/ubuntu/App1/
         - name: nginx-proxy-config
-          configMap:
-            name: config-map
+          #configMap:
+            #name: config-map
   
            
 ---
