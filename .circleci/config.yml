@@ -20,7 +20,6 @@ jobs:
             scp -o StrictHostKeyChecking=no -r ./* ubuntu@3.223.125.157:~/
             ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.16.8/2020-04-16/bin/linux/amd64/kubectl"
             ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "chmod +x ./kubectl"
-            ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin"
             ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "kubectl version --short --client"
             ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "kubectl delete all --all"
             ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "kubectl delete all --all"
@@ -44,7 +43,6 @@ jobs:
             scp -o StrictHostKeyChecking=no -r ./* ubuntu@34.201.47.241:~/
              ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.16.8/2020-04-16/bin/linux/amd64/kubectl"
             ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "chmod +x ./kubectl"
-            ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin"
             ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "kubectl version --short --client"
             ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "kubectl delete all --all"
             ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "kubectl delete all --all"
