@@ -1,46 +1,72 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
 version: 2
 jobs:
-  DevelopmentEnvironment:
+  deployDevelopment:
     docker:
-      - image: circleci/node:8.10
+      - image: circleci/node:latest
+    working_directory: ~/repo
     steps:
-      - add_ssh_keys:
-         fingerprints:
-           - "a0:10:07:ed:9d:01:87:51:ea:45:05:1d:19:1f:90:70"
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "a6:92:78:56:74:59:3b:f3:7f:a7:69:ed:7f:99:af:29"
       - run:
          name: "Archivo yaml" 
          command: |
-           cd ./config
-           scp -o StrictHostKeyChecking=no -r ./* ec2-user@54.173.3.127:~/
-           ssh -o StrictHostKeyChecking=no ec2-user@54.173.3.127 "kubectl delete all --all"
-           ssh -o StrictHostKeyChecking=no ec2-user@54.173.3.127 "kubectl delete all --all"
-           ssh -o StrictHostKeyChecking=no ec2-user@54.173.3.127 "kubectl apply -f deployment.yaml"
-  ProductionEnvironment:
+            cd ./config
+            scp -o StrictHostKeyChecking=no -r ./* ubuntu@3.223.125.157:~/
+            ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "configctl delete all --all"
+            ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "configctl delete all --all"
+            ssh -o StrictHostKeyChecking=no ubuntu@3.223.125.157 "configctl apply -f deployment.yaml"
+    
+  productionDeploy:
     docker:
-      - image: circleci/node:8.10
+      - image: circleci/node:latest
+    working_directory: ~/repo
+
     steps:
-      - add_ssh_keys:
-         fingerprints:
-           - "a0:10:07:ed:9d:01:87:51:ea:45:05:1d:19:1f:90:70"
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "f4:1c:cf:8e:31:a2:93:4a:4a:6d:58:18:f9:5c:19:64"
       - run:
          name: "Archivo yaml" 
          command: |
-           cd ./config
-           scp -o StrictHostKeyChecking=no -r ./* ec2-user@54.147.61.160:~/
-           ssh -o StrictHostKeyChecking=no ec2-user@54.147.61.160 "kubectl delete all --all"
-           ssh -o StrictHostKeyChecking=no ec2-user@54.147.61.160 "kubectl delete all --all"
-           ssh -o StrictHostKeyChecking=no ec2-user@54.147.61.160 "kubectl apply -f deployment.yaml"
+            cd ./config
+            scp -o StrictHostKeyChecking=no -r ./* ubuntu@34.201.47.241:~/
+            ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "configctl delete all --all"
+            ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "configctl delete all --all"
+            ssh -o StrictHostKeyChecking=no ubuntu@34.201.47.241 "configctl apply -f deployment.yaml"
+      
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+ 
+    
+
+
 workflows:
   version: 2
-  build: 
+  normal_run:
     jobs:
-      - DevelopmentEnvironment
+      - deployDevelopment:
+          filters:
+            branches:
+              only:
+                - master
       - request-testing:
           type: approval
           requires:
-            - DevelopmentEnvironment
-      - ProductionEnvironment:
+            - deployDevelopment
+      - productionDeploy:
           requires:
             - request-testing
+          filters:
+            branches:
+              only:
+                - master  
