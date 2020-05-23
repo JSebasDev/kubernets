@@ -17,7 +17,7 @@ spec:
         - name: app1
           image: httpd:2.4
           ports:
-          - port: 81
+          - containerPort: 81
             targetPort: 5000
           volumeMounts:
           - name: index-config1
